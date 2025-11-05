@@ -152,17 +152,17 @@
 
   <footer>© 2025 Sonora Valley — Sistema de Reportes</footer>
 
-  <!-- Firebase -->
+  <!-- ✅ Firebase: primero las librerías -->
   <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore-compat.js"></script>
 
+  <!-- ✅ Luego tu script -->
   <script>
-    // Configuración real de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAoi3_LjTMT7t1HoW1B169Xl07fU1wD9oA",
       authDomain: "mantenimientoapp-4dc8b.firebaseapp.com",
       projectId: "mantenimientoapp-4dc8b",
-      storageBucket: "mantenimientoapp-4dc8b.firebasestorage.app",
+      storageBucket: "mantenimientoapp-4dc8b.appspot.com",
       messagingSenderId: "1037365222929",
       appId: "1:1037365222929:web:071b22cec643181c129bb0"
     };
@@ -185,10 +185,9 @@
       const reporte = { banda, comentario, fecha, estado: "Pendiente" };
 
       try {
-        // Enviar a Firestore
+        console.log("📤 Enviando reporte:", reporte);
         await db.collection("reportes").add(reporte);
 
-        // Feedback visual
         output.innerHTML = `
           <strong>✅ Reporte enviado correctamente</strong><br><br>
           <b>Banda:</b> ${banda}<br>
@@ -209,7 +208,6 @@
 
         document.getElementById('banda').value = '';
         document.getElementById('comentario').value = '';
-
       } catch (error) {
         console.error("Error enviando reporte:", error);
         alert("❌ Ocurrió un error al enviar el reporte.");
