@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reporte de Bandas | Sonora Valley</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --primary: #9b1c1c;
@@ -18,7 +17,6 @@
     }
 
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-
     body {
       background: linear-gradient(180deg, #fffdf8 0%, #f4f2ec 100%);
       margin: 0;
@@ -28,10 +26,8 @@
       align-items: center;
       min-height: 100vh;
     }
-
     header { width: 100%; text-align: center; padding: 40px 20px 10px; position: relative; overflow: hidden; }
     header img { height: 110px; object-fit: contain; animation: fadeInDown 1.2s ease-out; }
-
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
     .card {
@@ -49,7 +45,6 @@
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
     h1 { text-align: center; font-weight: 600; font-size: 1.8rem; color: var(--primary); margin-bottom: 25px; letter-spacing: 0.5px; }
-
     label { font-weight: 500; color: var(--secondary); display: block; margin-bottom: 6px; margin-top: 15px; }
 
     select, textarea {
@@ -70,7 +65,6 @@
     }
 
     textarea { resize: none; min-height: 90px; }
-
     button {
       width: 100%;
       margin-top: 25px;
@@ -101,7 +95,6 @@
     }
 
     @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
     footer { text-align: center; font-size: 13px; color: #777; margin-top: 50px; margin-bottom: 15px; }
 
     .sun-glow {
@@ -128,26 +121,22 @@
 
   <div class="card">
     <h1>Reporte de Bandas</h1>
-
     <label for="banda">Selecciona un equipo:</label>
-    <select id="banda">
-      <option value="">Cargando equipos...</option>
-    </select>
+    <select id="banda"><option value="">Cargando equipos...</option></select>
 
     <label for="comentario">Describe la falla:</label>
     <textarea id="comentario" placeholder="Ejemplo: el motor de la banda se detuvo..."></textarea>
 
     <button id="enviar">📤 Enviar Reporte</button>
-
     <div id="output"></div>
   </div>
 
   <footer>© 2025 Sonora Valley — Sistema de Reportes</footer>
 
-  <!-- ✅ Firebase modular -->
+  <!-- ✅ Firebase 10+ con rutas actualizadas -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAoi3_LjTMT7t1HoW1B169Xl07fU1wD9oA",
@@ -165,7 +154,7 @@
     const boton = document.getElementById('enviar');
     const output = document.getElementById('output');
 
-    // 🔹 Cargar equipos desde la colección "equipos"
+    // 🔹 Cargar equipos desde Firestore
     async function cargarEquipos() {
       try {
         const snapshot = await getDocs(collection(db, "equipos"));
@@ -184,7 +173,7 @@
       }
     }
 
-    // 🔹 Enviar reporte a Firestore
+    // 🔹 Enviar reporte
     boton.addEventListener('click', async () => {
       const banda = bandaSelect.value;
       const comentario = document.getElementById('comentario').value.trim();
@@ -218,10 +207,10 @@
       }
     });
 
-    // Ejecutar al cargar la página
     cargarEquipos();
   </script>
 </body>
 </html>
+
 
 
