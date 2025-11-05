@@ -3,27 +3,219 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi página de prueba</title>
-  <link rel="stylesheet" href="estilos.css" />
+  <title>Reporte de Bandas | Sonora Valley</title>
+
+  <!-- Tipografía limpia y moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #9b1c1c;   
+      --secondary: #2f6b2f; 
+      --accent: #f8b400;    
+      --background: #faf8f5;
+      --card-bg: #ffffff;
+      --text: #222222;
+      --border: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+    body {
+      background: linear-gradient(180deg, #fffdf8 0%, #f4f2ec 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header { width: 100%; text-align: center; padding: 40px 20px 10px; position: relative; overflow: hidden; }
+
+    header img { height: 110px; object-fit: contain; animation: fadeInDown 1.2s ease-out; }
+
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background: var(--card-bg);
+      max-width: 480px;
+      width: 90%;
+      margin-top: 30px;
+      padding: 35px 40px;
+      border-radius: 22px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      border-top: 6px solid var(--secondary);
+      animation: fadeInUp 1.1s ease-out;
+    }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    h1 { text-align: center; font-weight: 600; font-size: 1.8rem; color: var(--primary); margin-bottom: 25px; letter-spacing: 0.5px; }
+
+    label { font-weight: 500; color: var(--secondary); display: block; margin-bottom: 6px; margin-top: 15px; }
+
+    select, textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px;
+      font-size: 15px;
+      transition: all 0.25s ease;
+      background-color: #fafafa;
+    }
+
+    select:focus, textarea:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(47,107,47,0.2);
+      background-color: #fff;
+      outline: none;
+    }
+
+    textarea { resize: none; min-height: 90px; }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      background: linear-gradient(135deg, var(--secondary), #3b8a3b);
+      border: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(47,107,47,0.3); }
+    button:active { transform: scale(0.98); }
+
+    #output {
+      margin-top: 25px;
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      display: none;
+      font-size: 14px;
+      line-height: 1.6;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+    footer { text-align: center; font-size: 13px; color: #777; margin-top: 50px; margin-bottom: 15px; }
+
+    .sun-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(255,184,0,0.4) 0%, rgba(255,184,0,0) 70%);
+      transform: translateX(-50%);
+      animation: glow 3s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+
+    @keyframes glow { from { opacity: 0.3; transform: translateX(-50%) scale(1); } to { opacity: 0.6; transform: translateX(-50%) scale(1.2); } }
+  </style>
 </head>
+
 <body>
   <header>
-    <h1>👋 Bienvenido a mi página de prueba</h1>
-    <p>Creada con Visual Studio Code</p>
+    <div class="sun-glow"></div>
+    <img src="logo-sonoravalley-optimizado.png" alt="Logo Sonora Valley" />
   </header>
 
-  <main>
-    <section>
-      <h2>Haz clic en el botón</h2>
-      <button id="boton">Haz clic aquí</button>
-      <p id="mensaje"></p>
-    </section>
-  </main>
+  <div class="card">
+    <h1>Reporte de Bandas</h1>
 
-  <footer>
-    <p>© 2025 Sonora Valley — Página de prueba</p>
-  </footer>
+    <label for="banda">Selecciona una banda:</label>
+    <select id="banda">
+      <option value="">-- Selecciona --</option>
+      <option value="A">Banda A</option>
+      <option value="B">Banda B</option>
+      <option value="C">Banda C</option>
+      <option value="D">Banda D</option>
+      <option value="E">Banda E</option>
+    </select>
 
-  <script src="script.js"></script>
+    <label for="comentario">Describe la falla:</label>
+    <textarea id="comentario" placeholder="Ejemplo: la banda se detuvo por sobrecalentamiento..."></textarea>
+
+    <button id="enviar">📤 Enviar Reporte</button>
+
+    <div id="output"></div>
+  </div>
+
+  <footer>© 2025 Sonora Valley — Sistema de Reportes</footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Configuración real de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAoi3_LjTMT7t1HoW1B169Xl07fU1wD9oA",
+      authDomain: "mantenimientoapp-4dc8b.firebaseapp.com",
+      projectId: "mantenimientoapp-4dc8b",
+      storageBucket: "mantenimientoapp-4dc8b.firebasestorage.app",
+      messagingSenderId: "1037365222929",
+      appId: "1:1037365222929:web:071b22cec643181c129bb0"
+    };
+
+    // Inicializa Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const boton = document.getElementById('enviar');
+    const output = document.getElementById('output');
+
+    boton.addEventListener('click', async () => {
+      const banda = document.getElementById('banda').value;
+      const comentario = document.getElementById('comentario').value.trim();
+
+      if (!banda) { alert('Por favor selecciona una banda.'); return; }
+      if (!comentario) { alert('Por favor escribe una descripción de la falla.'); return; }
+
+      const fecha = new Date().toISOString();
+      const reporte = { banda, comentario, fecha, estado: "Pendiente" };
+
+      try {
+        // Enviar a Firestore
+        await db.collection("reportes").add(reporte);
+
+        // Feedback visual
+        output.innerHTML = `
+          <strong>✅ Reporte enviado correctamente</strong><br><br>
+          <b>Banda:</b> ${banda}<br>
+          <b>Descripción:</b> ${comentario}<br>
+          <b>Fecha:</b> ${new Date(fecha).toLocaleString('es-MX')}
+        `;
+        output.style.display = 'block';
+
+        boton.innerText = "✔ Enviado";
+        boton.style.background = "linear-gradient(135deg, #9b1c1c, #c22a2a)";
+        boton.disabled = true;
+
+        setTimeout(() => {
+          boton.innerText = "📤 Enviar Reporte";
+          boton.disabled = false;
+          boton.style.background = "linear-gradient(135deg, var(--secondary), #3b8a3b)";
+        }, 2000);
+
+        document.getElementById('banda').value = '';
+        document.getElementById('comentario').value = '';
+
+      } catch (error) {
+        console.error("Error enviando reporte:", error);
+        alert("❌ Ocurrió un error al enviar el reporte.");
+      }
+    });
+  </script>
 </body>
 </html>
+
