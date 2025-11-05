@@ -8,9 +8,9 @@
 
   <style>
     :root {
-      --primary: #9b1c1c;   
-      --secondary: #2f6b2f; 
-      --accent: #f8b400;    
+      --primary: #9b1c1c;
+      --secondary: #2f6b2f;
+      --accent: #f8b400;
       --background: #faf8f5;
       --card-bg: #ffffff;
       --text: #222222;
@@ -129,18 +129,13 @@
   <div class="card">
     <h1>Reporte de Bandas</h1>
 
-    <label for="banda">Selecciona una banda:</label>
+    <label for="banda">Selecciona un equipo:</label>
     <select id="banda">
-      <option value="">-- Selecciona --</option>
-      <option value="A">Banda A</option>
-      <option value="B">Banda B</option>
-      <option value="C">Banda C</option>
-      <option value="D">Banda D</option>
-      <option value="E">Banda E</option>
+      <option value="">Cargando equipos...</option>
     </select>
 
     <label for="comentario">Describe la falla:</label>
-    <textarea id="comentario" placeholder="Ejemplo: la banda se detuvo por sobrecalentamiento..."></textarea>
+    <textarea id="comentario" placeholder="Ejemplo: el motor de la banda se detuvo..."></textarea>
 
     <button id="enviar">📤 Enviar Reporte</button>
 
@@ -149,69 +144,84 @@
 
   <footer>© 2025 Sonora Valley — Sistema de Reportes</footer>
 
-  <!-- ✅ Firebase con type="module" (versión modular v9) -->
+  <!-- ✅ Firebase modular -->
   <script type="module">
-    // Importar los módulos de Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore.js";
 
-    // Tu configuración de Firebase corregida
     const firebaseConfig = {
       apiKey: "AIzaSyAoi3_LjTMT7t1HoW1B169Xl07fU1wD9oA",
       authDomain: "mantenimientoapp-4dc8b.firebaseapp.com",
       projectId: "mantenimientoapp-4dc8b",
-      storageBucket: "mantenimientoapp-4dc8b.appspot.com",  // ✅ Corregido
+      storageBucket: "mantenimientoapp-4dc8b.firebasestorage.app",
       messagingSenderId: "1037365222929",
       appId: "1:1037365222929:web:071b22cec643181c129bb0"
     };
 
-    // Inicializar Firebase y Firestore
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Elementos del DOM
+    const bandaSelect = document.getElementById('banda');
     const boton = document.getElementById('enviar');
     const output = document.getElementById('output');
 
+    // 🔹 Cargar equipos desde la colección "equipos"
+    async function cargarEquipos() {
+      try {
+        const snapshot = await getDocs(collection(db, "equipos"));
+        bandaSelect.innerHTML = '<option value="">-- Selecciona un equipo --</option>';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const nombre = data.nombre || doc.id;
+          const option = document.createElement("option");
+          option.value = nombre;
+          option.textContent = nombre;
+          bandaSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Error cargando equipos:", error);
+        bandaSelect.innerHTML = '<option value="">Error al cargar equipos</option>';
+      }
+    }
+
+    // 🔹 Enviar reporte a Firestore
     boton.addEventListener('click', async () => {
-      const banda = document.getElementById('banda').value;
+      const banda = bandaSelect.value;
       const comentario = document.getElementById('comentario').value.trim();
 
-      if (!banda) return alert('Por favor selecciona una banda.');
-      if (!comentario) return alert('Por favor escribe una descripción de la falla.');
+      if (!banda) { alert('Por favor selecciona un equipo.'); return; }
+      if (!comentario) { alert('Por favor escribe una descripción.'); return; }
 
       const fecha = new Date().toISOString();
       const reporte = { banda, comentario, fecha, estado: "Pendiente" };
 
       try {
         await addDoc(collection(db, "reportes"), reporte);
-
-        output.innerHTML = `
-          <strong>✅ Reporte enviado correctamente</strong><br><br>
-          <b>Banda:</b> ${banda}<br>
+        output.innerHTML = `<strong>✅ Reporte enviado correctamente</strong><br><br>
+          <b>Equipo:</b> ${banda}<br>
           <b>Descripción:</b> ${comentario}<br>
-          <b>Fecha:</b> ${new Date(fecha).toLocaleString('es-MX')}
-        `;
+          <b>Fecha:</b> ${new Date(fecha).toLocaleString('es-MX')}`;
         output.style.display = 'block';
-
         boton.innerText = "✔ Enviado";
-        boton.style.background = "linear-gradient(135deg, #9b1c1c, #c22a2a)";
         boton.disabled = true;
 
         setTimeout(() => {
           boton.innerText = "📤 Enviar Reporte";
           boton.disabled = false;
-          boton.style.background = "linear-gradient(135deg, var(--secondary), #3b8a3b)";
         }, 2000);
 
-        document.getElementById('banda').value = '';
+        bandaSelect.value = '';
         document.getElementById('comentario').value = '';
       } catch (error) {
         console.error("Error enviando reporte:", error);
         alert("❌ Ocurrió un error al enviar el reporte.");
       }
     });
+
+    // Ejecutar al cargar la página
+    cargarEquipos();
   </script>
 </body>
 </html>
+
 
