@@ -8,9 +8,9 @@
 
   <style>
     :root {
-      --primary: #9b1c1c;   
-      --secondary: #2f6b2f; 
-      --accent: #f8b400;    
+      --primary: #9b1c1c;
+      --secondary: #2f6b2f;
+      --accent: #f8b400;
       --background: #faf8f5;
       --card-bg: #ffffff;
       --text: #222222;
@@ -149,8 +149,8 @@
 
   <footer>© 2025 Sonora Valley — Sistema de Reportes</footer>
 
-  <!-- ✅ Firebase modular con type="module" -->
-  <script type="module">
+  <!-- ✅ Firebase modular con type="module" y crossorigin -->
+  <script type="module" crossorigin="anonymous">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore.js";
 
@@ -173,15 +173,14 @@
       const banda = document.getElementById('banda').value;
       const comentario = document.getElementById('comentario').value.trim();
 
-      if (!banda) { alert('Por favor selecciona una banda.'); return; }
-      if (!comentario) { alert('Por favor escribe una descripción de la falla.'); return; }
+      if (!banda) return alert('Por favor selecciona una banda.');
+      if (!comentario) return alert('Por favor escribe una descripción de la falla.');
 
       const fecha = new Date().toISOString();
       const reporte = { banda, comentario, fecha, estado: "Pendiente" };
 
       try {
         await addDoc(collection(db, "reportes"), reporte);
-
         output.innerHTML = `
           <strong>✅ Reporte enviado correctamente</strong><br><br>
           <b>Banda:</b> ${banda}<br>
@@ -189,7 +188,6 @@
           <b>Fecha:</b> ${new Date(fecha).toLocaleString('es-MX')}
         `;
         output.style.display = 'block';
-
         boton.innerText = "✔ Enviado";
         boton.style.background = "linear-gradient(135deg, #9b1c1c, #c22a2a)";
         boton.disabled = true;
